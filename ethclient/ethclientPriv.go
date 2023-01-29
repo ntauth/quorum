@@ -5,6 +5,7 @@ import (
 
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/private/engine"
 )
 
 func (ec *Client) LogsPriv(ctx context.Context, groupId string, q ethereum.FilterQuery) ([]types.Log, error) {
@@ -20,5 +21,11 @@ func (ec *Client) LogsPriv(ctx context.Context, groupId string, q ethereum.Filte
 func (ec *Client) FilterLogsPriv(ctx context.Context, groupId string, filterId string) ([]types.Log, error) {
 	var result []types.Log
 	err := ec.c.CallContext(ctx, &result, "priv_getFilterLogs", groupId, filterId)
+	return result, err
+}
+
+func (ec *Client) PrivacyGroups(ctx context.Context, members []string) ([]engine.PrivacyGroup, error) {
+	var result []engine.PrivacyGroup
+	err := ec.c.CallContext(ctx, &result, "priv_findPrivacyGroup", members)
 	return result, err
 }
